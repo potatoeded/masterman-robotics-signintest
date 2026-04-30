@@ -30,13 +30,18 @@
 
         let statusTimeout = null
         function displayStatus(text, color = '#555') {
-            status.innerText = text
-            status.style.color = color
-
             if (statusTimeout) {
                 clearTimeout(statusTimeout)
             }
 
+			status.style.color = "transparent"
+
+			statusTimeout = setTimeout(() => {
+                status.innerText = text
+            	status.style.color = color
+
+            }, 0);
+			
             statusTimeout = setTimeout(() => {
                 status.style.color = "transparent"
                 statusTimeout = null;
