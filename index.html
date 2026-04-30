@@ -73,9 +73,16 @@
             	console.error('Error!', error.message);
         	}
     	}
-
+		function blockScientificNotation(event) {
+		    const invalidChars = ['e', 'E', '+', '-'];
+		    if (invalidChars.includes(event.key)) {
+		        event.preventDefault();
+		    }
+		}
+		
+		idInput.addEventListener('keydown', blockScientificNotation);
         idInput.addEventListener('input', async () => {
-          input.value = input.value.replace(/\s/g, ''); 
+          this.value = this.value.replace(/[^\d]/g, '');
   
           const val = input.value.trim();
         
