@@ -24,6 +24,7 @@
           if (!idValue) return;
         
           status.innerText = "Sending...";
+          status.style.color = "#555";
 
           if (!idValue || (idValue.length !== 7 && idValue.length !== 8) || isNaN(idValue)) {
             status.innerText = "ID must be 7 or 8 digits!";
