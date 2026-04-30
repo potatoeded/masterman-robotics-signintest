@@ -24,7 +24,14 @@
           if (!idValue) return;
         
           status.innerText = "Sending...";
-        
+
+          if (!idValue || (idValue.length !== 7 && idValue.length !== 8) || isNaN(idValue)) {
+            status.innerText = "ID must be 7 or 8 digits!";
+            status.style.color = "red";
+            input.value = ""; 
+            return;
+          }
+            
           try {
             await fetch(scriptURL, {
               method: 'POST',
@@ -34,10 +41,12 @@
               body: JSON.stringify({ id: idValue })
             });
             
-            status.innerText = "ID sent!";
+            status.innerText = "Success sending ID!";
+            status.style.color = "green";
             document.getElementById('idInput').value = ''; 
           } catch (error) {
-            status.innerText = "Error saving ID.";
+            status.innerText = "Error sending ID!";
+            status.style.color = "red";
             console.error('Error!', error.message);
           }
         }
