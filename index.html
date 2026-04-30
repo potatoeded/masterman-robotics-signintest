@@ -73,16 +73,25 @@
             	console.error('Error!', error.message);
         	}
     	}
-		function blockScientificNotation(event) {
-		    const invalidChars = ['e', 'E', '+', '-', '.'];
-		    if (invalidChars.includes(event.key)) {
-		        event.preventDefault();
+		const handleInput = (e) => {
+		    const invalidChars = ['e', 'E', '+', '-', '.'];		
+			
+		    if (invalidChars.includes(e.key)) {
+		        e.preventDefault();
+		        return;
 		    }
-		}
 		
-		idInput.addEventListener('keydown', blockScientificNotation);
+		    if (e.target.value.length >= 8 && !controlKeys.includes(e.key)) {
+		        e.preventDefault();
+		    }
+		};
+		
+		idInput.addEventListener('keydown', handleInput);
 		idInput.addEventListener('input', function(e) {
 		    this.value = this.value.replace(/[^\d]/g, '');
+			if (this.value.length > 8) {
+		        this.value = this.value.slice(0, 8);
+		    }
 		});
         idInput.addEventListener('input', async () => {  
           const val = input.value.trim();
