@@ -24,6 +24,34 @@
     <p id="status">Placeholder</p>
 
     <script>
+		(function() {
+		    const AUTH_KEY = "8394017582947163";
+		    const deviceKey = localStorage.getItem("device_auth_token");
+		
+		    if (deviceKey !== AUTH_KEY) {
+		        document.documentElement.innerHTML = `
+		            <div style="text-align:center; margin-top:100px; font-family:sans-serif;">
+		                <h1>Access Denied</h1>
+		                <p>This device is not authorized to use this kiosk.</p>
+		                <input type="password" id="adminPass" placeholder="Enter Admin Key">
+		                <button onclick="authorizeDevice()">Authorize</button>
+		            </div>
+		        `;
+		        
+		        // Helper to authorize the device
+		        window.authorizeDevice = function() {
+		            const pass = document.getElementById('adminPass').value;
+		            if (pass === AUTH_KEY) {
+		                localStorage.setItem("device_auth_token", AUTH_KEY);
+		                location.reload();
+		            } else {
+		                alert("Invalid Key");
+		            }
+		        };
+		        throw new Error("Unauthorized Device");
+			}
+		})();
+
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxT_J37WfWeStzVmBeFa3HLDv9sddcgWqV3x9BCix9sXI0O8QyjhWhnGotz29l_zD_1/exec';
         const idInput = document.getElementById('idInput');
         const status = document.getElementById('status');
