@@ -4,9 +4,10 @@
     <style>
         body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding-top: 50px; background: #f4f4f9; }
         .container {
-          display: grid;
-          place-items: center; /* Centers both vertically and horizontally */
-          height: 200px;
+          display: flex;
+          align-items: center; /* Centers vertically */
+          justify-content: center; /* Centers horizontally (optional) */
+          height: 100vh; /* Ensure container has height to center within */
         }
         input { padding: 10px; font-size: 1.2rem; border-radius: 5px; border: 1px solid #ccc; width: 250px; }
         button { padding: 10px 20px; font-size: 1.2rem; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; }
