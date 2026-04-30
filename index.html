@@ -42,6 +42,18 @@
           }
         }
 
+        input.addEventListener('input', async () => {
+          const val = input.value.trim();
+          
+          if (val.length === 7 || val.length === 8) {
+            const response = await submitToAppsScript(val, 'auto');
+            
+            input.value = ""; 
+            status.innerText = "Processed!";
+            setTimeout(() => { status.innerText = ""; }, 2000);
+          }
+        });
+
     </script>
 </body>
 </html>
