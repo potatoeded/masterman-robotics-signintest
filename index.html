@@ -49,8 +49,7 @@
     		displayStatus("Sending...");
 
           	if (!idValue || (idValue.length !== 7 && idValue.length !== 8)) {
-            	status.innerText = "ID must be 7 or 8 digits!";
-            	status.style.color = "red";
+            	displayStatus("ID must be 7 or 8 digits!", "red");
             	input.value = ""; 
             	return;
           	}
@@ -64,12 +63,10 @@
               		body: JSON.stringify({ id: idValue })
            	 	});
 				
-            	status.innerText = "Success sending ID!";
-            	status.style.color = "green";
+            	displayStatus("Success sending ID!", "green");
             	document.getElementById('idInput').value = ''; 
         	} catch (error) {
-            	status.innerText = "Error sending ID!";
-            	status.style.color = "red";
+            	displayStatus("Error sending ID!", "red");
             	console.error('Error!', error.message);
         	}
     	}
@@ -93,11 +90,9 @@
 		        this.value = this.value.slice(0, 8);
 		    }
 		});
-        idInput.addEventListener('input', async () => {  
-          const val = input.value.trim();
-        
-          if (val.length === 7 || val.length === 8) {
-              
+        idInput.addEventListener('input', async () => {          
+          if (input.value.length === 7 || input.value.length === 8) {
+              displayStatus("Good job!", "green")
           }
         });
 
