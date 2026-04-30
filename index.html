@@ -4,6 +4,14 @@
     <style>
         body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: #f4f4f9; margin: 0; gap: 0px; }        
         input { padding: 10px; font-size: 1.2rem; border-radius: 5px; border: 1px solid #ccc; width: 250px; }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+        input[type=number] {
+          -moz-appearance: textfield;
+        }
         button { padding: 10px 20px; font-size: 1.2rem; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px; }
         #status { margin-top: 20px; color: #555; }
     </style>
@@ -20,48 +28,59 @@
         const idInput = document.getElementById('idInput')
         const status = document.getElementById('status');
 
-        async function registerID() {
-          const idValue = idInput.value;
-          if (!idValue) return;
-        
-          status.innerText = "Sending...";
-          status.style.color = "#555";
+        let statusTimeout = null
+        function displayStatus(text, color = '#555') {
+            status.innerText = text
+            status.style.color = color
 
-          if (!idValue || (idValue.length !== 7 && idValue.length !== 8)) {
-            status.innerText = "ID must be 7 or 8 digits!";
-            status.style.color = "red";
-            input.value = ""; 
-            return;
-          }
-            
-          try {
-            await fetch(scriptURL, {
-              method: 'POST',
-              mode: 'no-cors', 
-              cache: 'no-cache',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ id: idValue })
-            });
-            
-            status.innerText = "Success sending ID!";
-            status.style.color = "green";
-            document.getElementById('idInput').value = ''; 
-          } catch (error) {
-            status.innerText = "Error sending ID!";
-            status.style.color = "red";
-            console.error('Error!', error.message);
-          }
+            if (statusTimeout) {
+                clearTimeout(statusTimeout)
+            }
+
+            statusTimeout = setTimeout(() => {
+                status.innerText = '';
+                statusTimeout = null;
+            }, 3000);
         }
+        async function registerID() {
+        	const idValue = idInput.value;
+        	if (!idValue) return;
+
+    		displayStatus("Sending...");
+
+          	if (!idValue || (idValue.length !== 7 && idValue.length !== 8)) {
+            	status.innerText = "ID must be 7 or 8 digits!";
+            	status.style.color = "red";
+            	input.value = ""; 
+            	return;
+          	}
+            
+          	try {
+            	await fetch(scriptURL, {
+              		method: 'POST',
+              		mode: 'no-cors', 
+              		cache: 'no-cache',
+              		headers: { 'Content-Type': 'application/json' },
+              		body: JSON.stringify({ id: idValue })
+           	 	});
+				
+            	status.innerText = "Success sending ID!";
+            	status.style.color = "green";
+            	document.getElementById('idInput').value = ''; 
+        	} catch (error) {
+            	status.innerText = "Error sending ID!";
+            	status.style.color = "red";
+            	console.error('Error!', error.message);
+        	}
+    	}
 
         idInput.addEventListener('input', async () => {
+          input.value = input.value.replace(/\s/g, ''); 
+  
           const val = input.value.trim();
-          
+        
           if (val.length === 7 || val.length === 8) {
-            const response = await submitToAppsScript(val, 'auto');
-            
-            input.value = ""; 
-            status.innerText = "Processed!";
-            setTimeout(() => { status.innerText = ""; }, 2000);
+              
           }
         });
 
