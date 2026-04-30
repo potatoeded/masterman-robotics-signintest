@@ -4,19 +4,17 @@
     <style>
         body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding-top: 50px; background: #f4f4f9; }
         input { padding: 10px; font-size: 1.2rem; border-radius: 5px; border: 1px solid #ccc; width: 250px; }
-        button { padding: 10px 20px; font-size: 1.2rem; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; }
         #status { margin-top: 15px; color: #555; }
     </style>
 </head>
 <body>
 
-    <h2>Enter ID</h2>
+    <h2>Masterman Robotics Signingtest</h2>
     <input type="text" id="idInput" placeholder="Scan or type ID here...">
-    <button onclick="submitID()">Submit</button>
     <p id="status"></p>
 
     <script>
-        const scriptURL = 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxT_J37WfWeStzVmBeFa3HLDv9sddcgWqV3x9BCix9sXI0O8QyjhWhnGotz29l_zD_1/exec';
 
         async function submitID() {
             const idValue = document.getElementById('idInput').value;
