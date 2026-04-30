@@ -91,12 +91,8 @@
 		    }
 		};
 		idInput.addEventListener('keydown', handleInput);
-		async function processID(idValue) {
-		    displayStatus("Processing...", "#555");
-		    
-		    const idToSend = idValue;
-		    idInput.value = ""; 
-		
+		async function processID(idValue) {		    
+		    const idToSend = idValue;		
 		    try {
 		        const response = await fetch(scriptURL, {
 		            method: 'POST',
@@ -108,9 +104,9 @@
 		
 		        const data = await response.json();
 		        displayStatus(data.message, data.color);
+				idInput.value = ""; 
 		
 		    } catch (error) {
-		        displayStatus("Error processing ID!", "red");
 		        console.error(error);
 		    }
 		}
