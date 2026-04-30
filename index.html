@@ -39,8 +39,7 @@
 			statusTimeout = setTimeout(() => {
                 status.innerText = text
             	status.style.color = color
-
-            }, 30);
+            }, 100);
 			
             statusTimeout = setTimeout(() => {
                 status.style.color = "transparent"
@@ -65,7 +64,7 @@
               		mode: 'no-cors', 
               		cache: 'no-cache',
               		headers: { 'Content-Type': 'application/json' },
-              		body: JSON.stringify({ id: idValue })
+              		body: JSON.stringify({ id: idValue, action: "register" })
            	 	});
 				
             	displayStatus("Success sending ID!", "green");
@@ -94,10 +93,15 @@
 		        this.value = this.value.slice(0, 8);
 		    }
 		});
-        idInput.addEventListener('input', async () => {          
-          if (idInput.value.length === 7 || idInput.value.length === 8) {
-              displayStatus("Good job!", "green")
-          }
+		let typingTimeout = null;
+        idInput.addEventListener('input', async () => {     
+			if (typingTimeout) clearTimeout(typingTimeout);
+
+          	if (idInput.value.length === 7 || idInput.value.length === 8) {
+              	typingTimeout = setTimeout(() => {
+					displayStatus("Good job!", "green")
+		    	}, 1000); 
+          	}
         });
 		idInput.addEventListener('blur', () => {
     		idInput.focus();
