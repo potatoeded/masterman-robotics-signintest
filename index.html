@@ -74,16 +74,17 @@
         	}
     	}
 		function blockScientificNotation(event) {
-		    const invalidChars = ['e', 'E', '+', '-'];
+		    const invalidChars = ['e', 'E', '+', '-', '.'];
 		    if (invalidChars.includes(event.key)) {
 		        event.preventDefault();
 		    }
 		}
 		
 		idInput.addEventListener('keydown', blockScientificNotation);
-        idInput.addEventListener('input', async () => {
-          this.value = this.value.replace(/[^\d]/g, '');
-  
+		idInput.addEventListener('input', function(e) {
+		    this.value = this.value.replace(/[^\d]/g, '');
+		});
+        idInput.addEventListener('input', async () => {  
           const val = input.value.trim();
         
           if (val.length === 7 || val.length === 8) {
