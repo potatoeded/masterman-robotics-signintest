@@ -27,7 +27,7 @@
 		(function() {
 		    const accessGranted = localStorage.getItem("access_granted_token");
 		
-		    if (accessGranted !== true) {
+		    if (accessGranted !== "Access granted!") {
 		        document.documentElement.innerHTML = `
 		            <div style="text-align:center; margin-top:100px; font-family:sans-serif;">
 		                <h1>Access Denied</h1>
@@ -50,7 +50,7 @@
 		                const data = await response.json();
 		
 		                if (data.message === "Access granted!") {
-		                    localStorage.setItem("access_granted_token", true);
+		                    localStorage.setItem("access_granted_token", data.message);
 		                    location.reload();
 		                } else {
 		                    alert("Invalid key!");
