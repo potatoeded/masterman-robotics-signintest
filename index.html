@@ -48,37 +48,36 @@
             }, 3000);
         }
         async function registerID() {
-        	const idValue = idInput.value;
-        	if (!idValue) return;
-
-    		displayStatus("Sending...");
-
-          	if (!idValue || (idValue.length !== 7 && idValue.length !== 8)) {
-            	displayStatus("ID must be 7 or 8 digits!", "red");
-            	input.value = ""; 
-            	return;
-          	}
-
-			button.disabled = true;
-			
-          	try {
-            	await fetch(scriptURL, {
-              		method: 'POST',
-              		mode: 'no-cors', 
-              		cache: 'no-cache',
-              		headers: { 'Content-Type': 'application/json' },
-              		body: JSON.stringify({ id: idValue, action: "register" })
-           	 	});
-				
-            	displayStatus("Success sending ID!", "green");
-            	document.getElementById('idInput').value = ''; 
-        	} catch (error) {
-            	displayStatus("Error sending ID!", "red");
-            	console.error('Error!', error.message);
-        	}
-
-			button.disabled = false;
-    	}
+			const idValue = idInput.value;
+		  
+		  	if (!idValue || (idValue.length !== 7 && idValue.length !== 8)) {
+		    	displayStatus("ID must be 7 or 8 digits!", "red");
+		    	idInput.value = "";
+		    	return;
+		  	}
+		
+		  	button.disabled = true;
+		  	displayStatus("Sending...");
+		
+		  	try {
+		    	const response = await fetch(scriptURL, {
+		      		method: 'POST',
+		      		body: JSON.stringify({ 
+		        	id: idValue, 
+		        	action: "register" 
+		    	})
+		    });
+		
+		    	const data = await response.json();
+		    	displayStatus(data.message, data.color);
+		    	idInput.value = '';
+		  	} catch (error) {
+		    	displayStatus("Error sending ID!", "red");
+		    	console.error('Error!', error.message);
+		 	} finally {
+		    	button.disabled = false;
+		  	}
+		}
 		const handleInput = (e) => {
 		    const invalidChars = ['e', 'E', '+', '-', '.'];		
 			
