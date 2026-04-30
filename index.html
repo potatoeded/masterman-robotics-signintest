@@ -11,22 +11,23 @@
 <body>
 
     <h2>Masterman Robotics Signingtest</h2>
-    <input type="text" id="idInput" placeholder="Scan or type ID here...">
+    <input type="number" id="idInput" placeholder="Scan or type ID here..." autofocus>
     <button onclick="registerID()">Register</button>
     <p id="status"></p>
 
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxT_J37WfWeStzVmBeFa3HLDv9sddcgWqV3x9BCix9sXI0O8QyjhWhnGotz29l_zD_1/exec';
+        const idInput = document.getElementById('idInput')
+        const status = document.getElementById('status');
 
         async function registerID() {
-          const idValue = document.getElementById('idInput').value;
-          const status = document.getElementById('status');
+          const idValue = idInput.value;
           if (!idValue) return;
         
           status.innerText = "Sending...";
           status.style.color = "#555";
 
-          if (!idValue || (idValue.length !== 7 && idValue.length !== 8) || isNaN(idValue)) {
+          if (!idValue || (idValue.length !== 7 && idValue.length !== 8)) {
             status.innerText = "ID must be 7 or 8 digits!";
             status.style.color = "red";
             input.value = ""; 
@@ -52,7 +53,7 @@
           }
         }
 
-        input.addEventListener('input', async () => {
+        idInput.addEventListener('input', async () => {
           const val = input.value.trim();
           
           if (val.length === 7 || val.length === 8) {
