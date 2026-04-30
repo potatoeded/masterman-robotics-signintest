@@ -13,7 +13,7 @@
           -moz-appearance: textfield;
         }
         button { padding: 10px 20px; font-size: 1.2rem; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px; }
-        #status { margin-top: 20px; color: #555; }
+        #status { margin-top: 20px; color: transparent; }
     </style>
 </head>
 <body>
@@ -21,7 +21,7 @@
     <h2>Masterman Robotics Signintest</h2>
     <input type="number" id="idInput" placeholder="Scan or type ID here..." autofocus>
     <button onclick="registerID()">Register</button>
-    <p id="status"></p>
+    <p id="status">Placeholder</p>
 
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxT_J37WfWeStzVmBeFa3HLDv9sddcgWqV3x9BCix9sXI0O8QyjhWhnGotz29l_zD_1/exec';
@@ -38,7 +38,7 @@
             }
 
             statusTimeout = setTimeout(() => {
-                status.innerText = '';
+                status.style.color = "transparent"
                 statusTimeout = null;
             }, 3000);
         }
