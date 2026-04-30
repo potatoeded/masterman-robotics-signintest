@@ -25,30 +25,41 @@
 
     <script>
 		(function() {
-		    const AUTH_KEY = "8394017582947163";
-		    const deviceKey = localStorage.getItem("device_auth_token");
+		    const accessGranted = localStorage.getItem("access_granted_token");
 		
-		    if (deviceKey !== AUTH_KEY) {
+		    if (accessGranted !== true) {
 		        document.documentElement.innerHTML = `
 		            <div style="text-align:center; margin-top:100px; font-family:sans-serif;">
 		                <h1>Access Denied</h1>
 		                <p>This device is not authorized to use this kiosk.</p>
 		                <input type="password" id="adminPass" placeholder="Enter Admin Key">
-		                <button onclick="authorizeDevice()">Authorize</button>
+		                <button onclick="grantAccess()">Authorize</button>
 		            </div>
 		        `;
 		        
-		        // Helper to authorize the device
-		        window.authorizeDevice = function() {
-		            const pass = document.getElementById('adminPass').value;
-		            if (pass === AUTH_KEY) {
-		                localStorage.setItem("device_auth_token", AUTH_KEY);
-		                location.reload();
-		            } else {
-		                alert("Invalid Key");
+		        window.grantAccess = async function() {
+	            	const pass = document.getElementById('adminPass').value;	
+					
+		            try {
+		                const response = await fetch(scriptURL, {
+		                    method: 'POST',
+				      		body: JSON.stringify({ 
+				        	id: "0", 
+				        	action: pass 
+		                });
+		                const data = await response.json();
+		
+		                if (data.message === "Access granted!") {
+		                    localStorage.setItem("access_granted_token", true);
+		                    location.reload();
+		                } else {
+		                    alert("Invalid key!");
+		                }
+		            } catch (e) {
+		                alert("Error granting access!");
 		            }
-		        };
-		        throw new Error("Unauthorized Device");
+	        	};
+	        	throw new Error("Access not granted!");
 			}
 		})();
 
