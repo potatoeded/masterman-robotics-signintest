@@ -2,8 +2,7 @@
 <html>
 <head>
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f4f4f9; margin: 0; }
-        input { padding: 10px; font-size: 1.2rem; border-radius: 5px; border: 1px solid #ccc; width: 250px; }
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: #f4f4f9; margin: 0; gap: 10px; }        input { padding: 10px; font-size: 1.2rem; border-radius: 5px; border: 1px solid #ccc; width: 250px; }
         button { padding: 10px 20px; font-size: 1.2rem; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; }
         #status { margin-top: 15px; color: #555; }
     </style>
@@ -12,31 +11,39 @@
 
     <h2>Masterman Robotics Signingtest</h2>
     <input type="text" id="idInput" placeholder="Scan or type ID here...">
-    <button onclick="submitID()">Submit</button>
+    <button onclick="registerID()">Register</button>
     <p id="status"></p>
 
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxT_J37WfWeStzVmBeFa3HLDv9sddcgWqV3x9BCix9sXI0O8QyjhWhnGotz29l_zD_1/exec';
 
-        async function submitID() {
-            const idValue = document.getElementById('idInput').value;
-            const status = document.getElementById('status');
+        async function registerID() {
+          const idValue = document.getElementById('idInput').value;
+          const status = document.getElementById('status');
+          if (!idValue) return;
+        
+          status.innerText = "Sending...";
+        
+          try {
+            // Send as text/plain or form-encoded to avoid CORS preflight issues
+            await fetch(scriptURL, {
+              method: 'POST',
+              mode: 'no-cors', // Critical for Apps Script Web Apps
+              cache: 'no-cache',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id: idValue })
+            });
             
-            if (!idValue) return;
-            status.innerText = "Sending...";
-
-            try {
-                await fetch(scriptURL, {
-                    method: 'POST',
-                    body: JSON.stringify({ id: idValue })
-                });
-                status.innerText = "ID saved successfully!";
-                document.getElementById('idInput').value = ''; // Clear input
-            } catch (error) {
-                status.innerText = "Error saving ID.";
-                console.error('Error!', error.message);
-            }
+            // Note: With 'no-cors', you won't get a "success" response back, 
+            // but the data will still land in your Google Sheet.
+            status.innerText = "ID sent!";
+            document.getElementById('idInput').value = ''; 
+          } catch (error) {
+            status.innerText = "Error saving ID.";
+            console.error('Error!', error.message);
+          }
         }
+
     </script>
 </body>
 </html>
