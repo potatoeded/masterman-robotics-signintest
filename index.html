@@ -27,19 +27,19 @@
 		const scriptURL = 'https://script.google.com/macros/s/AKfycbxT_J37WfWeStzVmBeFa3HLDv9sddcgWqV3x9BCix9sXI0O8QyjhWhnGotz29l_zD_1/exec';
 		
 		(function() {
-		    const accessGranted = localStorage.getItem("access_granted_token");
+		    const authorized = localStorage.getItem("auth_token");
 		
-		    if (accessGranted !== "Access granted!") {
+		    if (authorized !== "Access granted!") {
 		        document.documentElement.innerHTML = `
 		            <div style="text-align:center; margin-top:100px; font-family:sans-serif;">
 		                <h1>Access Denied</h1>
 		                <p>This device is not authorized to use this kiosk.</p>
 		                <input type="password" id="adminPass" placeholder="Enter Admin Key">
-		                <button onclick="grantAccess()">Authorize</button>
+		                <button onclick="authorizeDevice()">Authorize</button>
 		            </div>
 		        `;
 		        
-		        window.grantAccess = async function() {
+		        window.authorizeDevice = async function() {
 	            	const pass = document.getElementById('adminPass').value;	
 					
 		            try {
@@ -53,7 +53,7 @@
 		                const data = await response.json();
 		
 		                if (data.message === "Access granted!") {
-		                    localStorage.setItem("access_granted_token", data.message);
+		                    localStorage.setItem("auth_token", data.message);
 		                    location.reload();
 		                } else {
 		                    alert("Invalid key!");
