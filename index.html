@@ -94,11 +94,11 @@
         async function registerID() {
 			const idValue = idInput.value;
 		  
-		  	// if (!idValue || (idValue.length !== 7 && idValue.length !== 8)) {
-		   //  	displayStatus("ID must be 7 or 8 digits!", "red");
-		   //  	idInput.value = "";
-		   //  	return;
-		  	// }
+		  	if (!idValue || (idValue.length >= 7 && idValue.length <= 10)) {
+		    	displayStatus("ID must be 7 to 10 digits!", "red");
+		    	idInput.value = "";
+		    	return;
+		  	}
 				
 		  	try {
 		    	const response = await fetch(scriptURL, {
@@ -124,7 +124,7 @@
 		        return;
 		    }
 		
-		    if (e.target.value.length >= 200 && !controlKeys.includes(e.key)) {
+		    if (e.target.value.length >= 10 && !controlKeys.includes(e.key)) {
 		        e.preventDefault();
 		    }
 		};
